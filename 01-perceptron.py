@@ -99,7 +99,7 @@ def generateData(count : int, lower_bound : float, upper_bound : float):
     return (X, Y)
 
 ### Testing 
-perceptron = Perceptron(2, np.sign) #initialization with 2 dimensions
+perceptron = Perceptron(2, np.sign) #initialization with 2 dimensions and signum activation function
 
 # problem space and data 
 lower_bound, upper_bound = -30, 30
