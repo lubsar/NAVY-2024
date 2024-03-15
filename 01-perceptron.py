@@ -22,28 +22,40 @@ class Perceptron:
         self.bias = self.bias + error * learning_rate
 
     # train perceptron on all training data in one epoch
-    def train(self, X, Y, learning_rate) -> None:
+    def train(self, X, Y, learning_rate, num_epoch) -> None:
         assert(len(X) == len(Y))
 
         # train of each record
-        for data_index in range(len(X)):
-            x = X[data_index]
-            y = Y[data_index]
+        for e in range(num_epoch):
+            for data_index in range(len(X)):
+                x = X[data_index]
+                y = Y[data_index]
 
-            # calculate output and its error based on current perceptron weights and biases
-            output = self.output(x)
-            error = y - output
+                # calculate output and its error based on current perceptron weights and biases
+                output = self.output(x)
+                error = y - output
 
-            # recalculate weights using training record error
-            for weight_index in range(len(self.weights)):
-                self.weights[weight_index] = self.recalculateWeight(x[weight_index], self.weights[weight_index], error, learning_rate)
-            
-            # recalculate perceptron bias using training record error 
-            self.recalculateBias(error, learning_rate)
+                # recalculate weights using training record error
+                for weight_index in range(len(self.weights)):
+                    self.weights[weight_index] = self.recalculateWeight(x[weight_index], self.weights[weight_index], error, learning_rate)
+                
+                # recalculate perceptron bias using training record error 
+                self.recalculateBias(error, learning_rate)
 
     # calcualte perceptron output for each (testing) record
     def predict(self, X):
         return np.apply_along_axis(self.output, 1, X)
+    
+    def predict_verbose(self, X):
+        def acc(x) : 
+            value = np.dot(x, self.weights) + self.bias
+    
+            activated = self.activation(value)
+            print(value, activated)
+
+            return activated
+
+        return np.apply_along_axis(acc, 1, X)
 
 ### Ploting function
 def plotData(X, Y):
@@ -99,7 +111,10 @@ def generateData(count : int, lower_bound : float, upper_bound : float):
     return (X, Y)
 
 ### Testing 
-perceptron = Perceptron(2, np.sign) #initialization with 2 dimensions and signum activation function
+epsilon = 0.001
+activation = lambda x: np.sign(x) if abs(x) > epsilon else 0 
+
+perceptron = Perceptron(2, activation) #initialization with 2 dimensions and signum activation function
 
 # problem space and data 
 lower_bound, upper_bound = -30, 30
@@ -110,9 +125,12 @@ X_train, Y_train = generateData(num_training_records, lower_bound, upper_bound)
 X_test, Y_test = generateData(num_testing_records, lower_bound, upper_bound)
 
 #training one epoch and prediction 
-perceptron.train(X_train, Y_train, 0.1)
+perceptron.train(X_train, Y_train, 0.001, 10000)
 Y_predict = perceptron.predict(X_test)
+Testo = perceptron.predict_verbose(X_test)
+
+print(Y_predict, Y_test)
 
 # visualisation
-plotData(X_test, Y_test)
+plotData(X_test, Y_predict)
 pass

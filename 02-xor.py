@@ -29,10 +29,10 @@ class NeuralNetwork:
 
                 # calculate output and its error based on current weights and biases
                 hidden_output, output = self.output(x)
-                error = y - output
+                output_error = y - output
 
                 # calculate changes to output and hidden layer weights and biases
-                delta_output = error * self.activation_derivative(output)
+                delta_output = output_error * self.activation_derivative(output)
                 delta_hidden = delta_output * self.output_weights.T * self.activation_derivative(hidden_output)
 
                 # recalculate weights and biases using training record error
