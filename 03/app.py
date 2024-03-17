@@ -6,7 +6,7 @@ import hopfield as hf
 
 import numpy as np
 
-class GridApp:
+class HopfieldApp:
     def __init__(self, master, grid_size):
         self.master = master
         self.grid_size = grid_size
@@ -141,7 +141,7 @@ class GridApp:
 def main():
     root = tk.Tk()
     root.title("Hopfield network")
-    app = GridApp(root, 5)
+    app = HopfieldApp(root, 5)
     root.mainloop()
 
 if __name__ == "__main__":
