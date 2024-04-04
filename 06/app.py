@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
 
-import lsystem as ls
 import numpy as np
 import math
 import json
